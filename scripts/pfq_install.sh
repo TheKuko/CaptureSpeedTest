@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HOME=$(pwd)/..
+HOME="$(pwd)/.."
 
 echo Installing deps...
 #apt-get install -y software-properties-common 

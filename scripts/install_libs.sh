@@ -1,6 +1,10 @@
 #!/bin/bash
 
 mkdir -p ../libs
+if [ $? -ne 0 ]; then
+	echo "Can't create libs folder."
+	exit 1
+fi
 
 read -p "Download & Install PF_RING? [N/y]: " PFRING
 if [ "$PFRING" == "y" ]; then

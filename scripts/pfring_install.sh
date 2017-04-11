@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HOME=$(pwd)/..
+HOME="$(pwd)/.."
 
 echo Installing deps...
 sudo apt-get install -y build-essential bison flex linux-headers-$(uname -r) #dkms
@@ -11,37 +11,47 @@ fi
 echo OK
 
 cd "$HOME/libs"
-wget http://apt.ntop.org/16.04/all/apt-ntop.deb 
-echo Adding ntop repo...
-sudo dpkg -i apt-ntop.deb 
-if [ $? -ne 0 ]; then
-	echo FAIL
-	exit 1
-fi
-echo OK
-rm apt-ntop.deb
-
-sudo apt-get clean all 
-sudo apt-get update  
-echo Installing pfring...
-sudo apt-get install -y pfring 
-if [ $? -ne 0 ]; then
-	echo FAIL
-	exit 1
-fi
-echo OK
+#wget http://apt.ntop.org/16.04/all/apt-ntop.deb 
+#echo Adding ntop repo...
+#sudo dpkg -i apt-ntop.deb 
+#if [ $? -ne 0 ]; then
+#	echo FAIL
+#	exit 1
+#fi
+#echo OK
+#rm apt-ntop.deb
+#
+#sudo apt-get clean all 
+#sudo apt-get update  
+#echo Installing pfring...
+#sudo apt-get install -y pfring 
+#if [ $? -ne 0 ]; then
+#	echo FAIL
+#	exit 1
+#fi
+#echo OK
 
 echo Clonning pfring repo...
-git clone https://github.com/ntop/PF_RING.git 
-if [ $? -ne 0 ]; then
-	echo FAIL
-	exit 1
+if [ ! -d "./PF_RING" ]; then
+    git clone https://github.com/ntop/PF_RING.git 
+    if [ $? -ne 0 ]; then
+    	echo FAIL
+    	exit 1
+    fi
+    echo OK
 fi
-echo OK
+
+echo Building kernel module...
+cd PF_RING/kernel && make && sudo insmod ./pf_ring.ko
+if [ $? -ne 0 ]; then
+	echo ****************************************** FAIL
+	#exit 1
+else
+    echo OK
+fi
 
 echo Building..
-cd PF_RING/userland/
-./configure && make     # make install? TODO
+cd ../userland/ && ./configure && make     # make install? TODO
 if [ $? -ne 0 ]; then
 	echo FAIL
 	exit 1
@@ -59,10 +69,11 @@ echo OK
 echo Building tcpdump...
 cd ../tcpdump && ./configure && make # && sudo make install 
 if [ $? -ne 0 ]; then
-	echo FAIL
-	exit 1
+	echo ************************************* FAIL
+	#exit 1
+else
+    echo OK
 fi
-echo OK
 
 cd "$HOME/libs/PF_RING"
 ln -s userland/libpcap libpcap

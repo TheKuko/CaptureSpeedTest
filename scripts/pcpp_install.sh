@@ -1,9 +1,9 @@
 #!/bin/sh
 
-HOME=$(pwd)/..
+HOME="$(pwd)/.."
 
 cd "$HOME/"
-echo Clonning PcapPlusPlus repo...
+echo Clonning PcapPlusPlus repository...
 git clone https://github.com/seladb/PcapPlusPlus
 if [ $? -ne 0 ]; then
 	echo FAIL

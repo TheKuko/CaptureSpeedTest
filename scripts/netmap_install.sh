@@ -1,9 +1,9 @@
 #!/bin/sh
 
-HOME=$(pwd)/..
+HOME="$(pwd)/.."
 
 cd "$HOME/libs/"
-echo Clonning netmap repo...
+echo Clonning netmap repository...
 git clone https://github.com/luigirizzo/netmap 
 if [ $? -ne 0 ]; then
 	echo FAIL

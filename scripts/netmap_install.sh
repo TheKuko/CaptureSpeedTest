@@ -3,6 +3,15 @@
 HOME="$(pwd)/.."
 
 cd "$HOME/libs/"
+
+echo Downloading kernel sources...
+sudo apt-get source linux-headers-$(uname -r)
+if [ $? -ne 0 ]; then
+	echo FAIL
+	exit 1
+fi
+echo OK
+
 echo Clonning netmap repository...
 git clone https://github.com/luigirizzo/netmap 
 if [ $? -ne 0 ]; then
@@ -13,7 +22,7 @@ echo OK
 
 echo Building...
 cd netmap
-./configure && make && sudo make install 
+./configure --kernel-sources=../linux-hwe-4.8.0 && make && sudo make install 
 if [ $? -ne 0 ]; then
 	echo FAIL
 	exit 1

@@ -5,6 +5,7 @@ HOME="$(pwd)/.."
 cd "$HOME/libs/"
 
 echo Downloading kernel sources...
+sudo apt-get update
 sudo apt-get source linux-headers-$(uname -r)
 if [ $? -ne 0 ]; then
 	echo FAIL
@@ -41,7 +42,7 @@ echo OK
 cd "$HOME/libs/netmap"
 ln -s netmap-libpcap libpcap
 
-#echo Modprobe netmap
-# modprobe netmap
-# modinfo netmap
+echo Modprobe netmap
+modprobe netmap
+modinfo netmap
 #lsmod

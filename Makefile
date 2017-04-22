@@ -1,6 +1,6 @@
 CXX=g++
 CXXFLAGS=-std=c++11 -pedantic -Wall -Wextra
-LDFLAGS=-lpcap -lpthread -lrt -ldl -lpfring 
+LDFLAGS=-lpcap -lpthread -lrt -ldl
 
 SHELL:=/bin/bash
 SRC_DIR=src

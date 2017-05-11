@@ -11,25 +11,25 @@ fi
 echo OK
 
 cd "$HOME/libs"
-#wget http://apt.ntop.org/16.04/all/apt-ntop.deb 
-#echo Adding ntop repo...
-#sudo dpkg -i apt-ntop.deb 
-#if [ $? -ne 0 ]; then
-#	echo FAIL
-#	exit 1
-#fi
-#echo OK
-#rm apt-ntop.deb
-#
-#sudo apt-get clean all 
-#sudo apt-get update  
-#echo Installing pfring...
-#sudo apt-get install -y pfring 
-#if [ $? -ne 0 ]; then
-#	echo FAIL
-#	exit 1
-#fi
-#echo OK
+wget http://apt.ntop.org/16.04/all/apt-ntop.deb 
+echo Adding ntop repo...
+sudo dpkg -i apt-ntop.deb 
+if [ $? -ne 0 ]; then
+	echo FAIL
+	exit 1
+fi
+echo OK
+rm apt-ntop.deb
+
+sudo apt-get clean all 
+sudo apt-get update  
+echo Installing pfring...
+sudo apt-get install -y pfring 
+if [ $? -ne 0 ]; then
+	echo FAIL
+	exit 1
+fi
+echo OK
 
 echo Clonning pfring repo...
 if [ ! -d "./PF_RING" ]; then
@@ -41,14 +41,14 @@ if [ ! -d "./PF_RING" ]; then
     echo OK
 fi
 
-echo Building kernel module...
-cd PF_RING/kernel && make && sudo insmod ./pf_ring.ko
-if [ $? -ne 0 ]; then
-	echo ****************************************** FAIL
-	#exit 1
-else
-    echo OK
-fi
+#echo Building kernel module...
+#cd PF_RING/kernel && make && sudo insmod ./pf_ring.ko
+#if [ $? -ne 0 ]; then
+#	echo ****************************************** FAIL
+#	#exit 1
+#else
+#    echo OK
+#fi
 
 echo Building..
 cd ../userland/ && ./configure && make     # make install? TODO
@@ -59,7 +59,7 @@ fi
 echo OK
 
 echo Building libpcap...
-cd libpcap && ./configure && make # && sudo make install 
+cd libpcap && ./configure && make && sudo make install 
 if [ $? -ne 0 ]; then
 	echo FAIL
 	exit 1
